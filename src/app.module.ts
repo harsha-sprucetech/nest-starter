@@ -11,6 +11,15 @@ import { CarEntity } from './entities/car.entity';
 import { AuthModule } from './auth/auth.module';
 import { UserEntity } from './entities/user.entity';
 import configuration from './config/configuration';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { PostEntity } from './entities/post.entity';
+import { CommentEntity } from './entities/comment.entity';
+import { LikeEntity } from './entities/like.entity';
+import { PostService } from './services/post.service';
+import { CommentService } from './services/comment.service';
+import { PostController } from './controllers/post.controller';
+import { CommentController } from './controllers/comment.controller';
 
 @Module({
   imports: [
@@ -23,10 +32,10 @@ import configuration from './config/configuration';
       useFactory: getDatabaseConfig,
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([NumberEntity, CarEntity, UserEntity]),
+    TypeOrmModule.forFeature([NumberEntity, CarEntity, UserEntity, PostEntity, CommentEntity, LikeEntity]),
     AuthModule,
   ],
-  controllers: [NumberController, CarController],
-  providers: [NumberService, CarService],
+  controllers: [NumberController, CarController, AppController, PostController, CommentController],
+  providers: [NumberService, CarService, AppService, PostService, CommentService],
 })
 export class AppModule {}

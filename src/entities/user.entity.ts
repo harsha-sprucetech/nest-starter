@@ -1,5 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, BeforeInsert } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, UpdateDateColumn, BeforeInsert } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { PostEntity } from './post.entity';
+import { CommentEntity } from './comment.entity';
+import { LikeEntity } from './like.entity';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -17,6 +20,9 @@ export class UserEntity {
   @Column()
   password: string;
 
+  @Column()
+  name: string;
+
   @Column({
     type: 'enum',
     enum: UserRole,
@@ -29,6 +35,18 @@ export class UserEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => PostEntity, post => post.author)
+  posts: PostEntity[];
+
+  @OneToMany(() => CommentEntity, comment => comment.author)
+  comments: CommentEntity[];
+
+  @OneToMany(() => LikeEntity, like => like.user)
+  postLikes: LikeEntity[];
+
+  @OneToMany(() => LikeEntity, like => like.user)
+  commentLikes: LikeEntity[];
 
   @BeforeInsert()
   async hashPassword() {
