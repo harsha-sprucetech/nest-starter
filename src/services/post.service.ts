@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like as TypeORMLike, IsNull } from 'typeorm';
+import { Repository, Like as TypeORMLike, IsNull, Not } from 'typeorm';
 import { PostEntity } from '../entities/post.entity';
 import { LikeEntity } from '../entities/like.entity';
 import { CreatePostDto, UpdatePostDto, PostQueryDto } from '../dto/post.dto';
@@ -177,15 +177,20 @@ export class PostService {
       throw new ForbiddenException('Cannot like your own post');
     }
 
+    // Check for both active and soft-deleted likes
     const existingLike = await this.likeRepository.findOne({
-      where: {
-        userId,
-        postId,
-        deletedAt: IsNull(),
-      },
+      where: [
+        { userId, postId, deletedAt: IsNull() },
+        { userId, postId, deletedAt: Not(IsNull()) }
+      ],
     });
 
     if (existingLike) {
+      if (existingLike.deletedAt) {
+        // If the like was soft-deleted, restore it
+        existingLike.deletedAt = null as any;
+        return this.likeRepository.save(existingLike);
+      }
       throw new ForbiddenException('Already liked this post');
     }
 

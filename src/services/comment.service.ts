@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, IsNull } from 'typeorm';
+import { Repository, IsNull, Not } from 'typeorm';
 import { CommentEntity } from '../entities/comment.entity';
 import { PostEntity } from '../entities/post.entity';
 import { LikeEntity } from '../entities/like.entity';
@@ -131,10 +131,17 @@ export class CommentService {
     }
 
     const existingLike = await this.likeRepository.findOne({
-      where: { userId, commentId, deletedAt: IsNull() },
+      where: [
+        { userId, commentId, deletedAt: IsNull() },
+        { userId, commentId, deletedAt: Not(IsNull()) }
+      ],
     });
 
     if (existingLike) {
+      if (existingLike.deletedAt) {
+        existingLike.deletedAt = null as any;
+        return this.likeRepository.save(existingLike);
+      }
       throw new ForbiddenException('Already liked this comment');
     }
 
