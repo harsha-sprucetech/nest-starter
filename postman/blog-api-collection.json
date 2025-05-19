@@ -1,8 +1,10 @@
 {
 	"info": {
-		"_postman_id": "random-uuid",
+		"_postman_id": "48a1e22e-8674-4b12-afbd-c9376bfcbdb9",
 		"name": "Blog API",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45006637",
+		"_collection_link": "https://harsha-6914240.postman.co/workspace/harsha's-Workspace~2508d0f3-6525-4e34-8e60-c35e2322e7ee/collection/45006637-48a1e22e-8674-4b12-afbd-c9376bfcbdb9?action=share&source=collection_link&creator=45006637"
 	},
 	"item": [
 		{
@@ -24,10 +26,16 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/auth/login",
-							"host": ["{{baseUrl}}"],
-							"path": ["auth", "login"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Register",
@@ -41,14 +49,20 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\",\n    \"name\": \"John Doe\"\n}"
+							"raw": "{\n    \"email\": \"user3@example.com\",\n    \"mobileNumber\": \"9999999999\",\n    \"password\": \"123456\",\n    \"name\": \"User 2\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/auth/register",
-							"host": ["{{baseUrl}}"],
-							"path": ["auth", "register"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
 						}
-					}
+					},
+					"response": []
 				}
 			]
 		},
@@ -81,10 +95,15 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/posts",
-							"host": ["{{baseUrl}}"],
-							"path": ["posts"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Get All Posts",
@@ -93,8 +112,12 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/posts?page=1&limit=10",
-							"host": ["{{baseUrl}}"],
-							"path": ["posts"],
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							],
 							"query": [
 								{
 									"key": "page",
@@ -106,7 +129,8 @@
 								}
 							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Get Post by ID",
@@ -115,10 +139,16 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/posts/1",
-							"host": ["{{baseUrl}}"],
-							"path": ["posts", "1"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Update Post",
@@ -146,10 +176,16 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/posts/1",
-							"host": ["{{baseUrl}}"],
-							"path": ["posts", "1"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Delete Post",
@@ -168,10 +204,16 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/posts/1",
-							"host": ["{{baseUrl}}"],
-							"path": ["posts", "1"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Like Post",
@@ -190,10 +232,17 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/posts/1/like",
-							"host": ["{{baseUrl}}"],
-							"path": ["posts", "1", "like"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"1",
+								"like"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Unlike Post",
@@ -212,10 +261,17 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/posts/1/like",
-							"host": ["{{baseUrl}}"],
-							"path": ["posts", "1", "like"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"1",
+								"like"
+							]
 						}
-					}
+					},
+					"response": []
 				}
 			]
 		},
@@ -248,10 +304,15 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/comments",
-							"host": ["{{baseUrl}}"],
-							"path": ["comments"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comments"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Get Comments by Post ID",
@@ -260,10 +321,17 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/comments/post/1",
-							"host": ["{{baseUrl}}"],
-							"path": ["comments", "post", "1"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comments",
+								"post",
+								"1"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Update Comment",
@@ -291,10 +359,16 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/comments/1",
-							"host": ["{{baseUrl}}"],
-							"path": ["comments", "1"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comments",
+								"1"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Delete Comment",
@@ -313,10 +387,16 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/comments/1",
-							"host": ["{{baseUrl}}"],
-							"path": ["comments", "1"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comments",
+								"1"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Like Comment",
@@ -335,10 +415,17 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/comments/1/like",
-							"host": ["{{baseUrl}}"],
-							"path": ["comments", "1", "like"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comments",
+								"1",
+								"like"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Unlike Comment",
@@ -357,12 +444,41 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/comments/1/like",
-							"host": ["{{baseUrl}}"],
-							"path": ["comments", "1", "like"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comments",
+								"1",
+								"like"
+							]
 						}
-					}
+					},
+					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"variable": [
@@ -373,8 +489,14 @@
 		},
 		{
 			"key": "authToken",
-			"value": "your-jwt-token-here",
+			"value": "user1",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "authToken",
+			"value": "user2",
 			"type": "string"
 		}
 	]
-} 
+}

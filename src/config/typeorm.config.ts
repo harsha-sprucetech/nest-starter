@@ -15,5 +15,5 @@ export default new DataSource({
   database: process.env.POSTGRES_DB || 'testing',
   entities: [NumberEntity],
   migrations: [join(__dirname, '../migrations/*.{ts,js}')],
-  synchronize: false,
+  synchronize: true,
 }); 

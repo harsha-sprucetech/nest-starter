@@ -1,0 +1,22 @@
+{
+  "name": "admin-setup-script",
+  "version": "1.0.0",
+  "description": "Script to create admin user with all permissions",
+  "main": "create-admin.js",
+  "type": "module",
+  "scripts": {
+    "create-admin": "npx tsx create-admin.ts",
+    "truncate-db": "npx tsx truncate-db.ts"
+  },
+  "dependencies": {
+    "pg": "^8.11.3",
+    "dotenv": "^16.3.1",
+    "bcrypt": "^5.1.1"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.0",
+    "@types/bcrypt": "^5.0.2",
+    "tsx": "^4.7.1",
+    "typescript": "^5.7.3"
+  }
+} 

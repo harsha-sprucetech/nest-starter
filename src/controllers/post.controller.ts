@@ -15,35 +15,35 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { User } from '../decorators/user.decorator';
 import { PostService } from '../services/post.service';
 import { CreatePostDto, UpdatePostDto, PostQueryDto } from '../dto/post.dto';
-import { Roles } from '../decorators/roles.decorator';
-import { Role } from '../entities/role.enum';
-import { RolesGuard } from '../auth/roles.guard';
+import { PermissionGuard, RequirePermissions } from '../guards/permission.guard';
 
 @ApiTags('posts')
 @Controller('posts')
+@UseGuards(JwtAuthGuard, PermissionGuard)
+@ApiBearerAuth()
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @RequirePermissions({ resource: 'posts', action: 'create' })
   create(@User('id') userId: number, @Body() createPostDto: CreatePostDto) {
     return this.postService.create(userId, createPostDto);
   }
 
   @Get()
+  @RequirePermissions({ resource: 'posts', action: 'read' })
   findAll(@Query() query: PostQueryDto) {
     return this.postService.findAll(query);
   }
 
   @Get(':id')
+  @RequirePermissions({ resource: 'posts', action: 'read' })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.postService.findOne(id);
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @RequirePermissions({ resource: 'posts', action: 'update' })
   update(
     @User('id') userId: number,
     @Param('id', ParseIntPipe) id: number,
@@ -53,26 +53,22 @@ export class PostController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @ApiBearerAuth()
+  @RequirePermissions({ resource: 'posts', action: 'delete' })
   remove(
     @User('id') userId: number,
-    @User('role') role: Role,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return this.postService.remove(userId, id, role === Role.ADMIN);
+    return this.postService.remove(userId, id, true);
   }
 
   @Post(':id/like')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @RequirePermissions({ resource: 'posts', action: 'like' })
   like(@User('id') userId: number, @Param('id', ParseIntPipe) postId: number) {
     return this.postService.like(userId, postId);
   }
 
   @Delete(':id/like')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @RequirePermissions({ resource: 'posts', action: 'unlike' })
   unlike(@User('id') userId: number, @Param('id', ParseIntPipe) postId: number) {
     return this.postService.unlike(userId, postId);
   }

@@ -9,5 +9,7 @@ export const getDatabaseConfig = (configService: ConfigService): TypeOrmModuleOp
   password: configService.get<string>('database.password'),
   database: configService.get<string>('database.database'),
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-  synchronize: configService.get<string>('nodeEnv') === 'development',
+  synchronize: true,
+  migrations: [__dirname + '/../migrations/*{.ts,.js}'],
+  migrationsRun: true,
 }); 

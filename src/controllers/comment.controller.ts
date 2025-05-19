@@ -14,29 +14,29 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { User } from '../decorators/user.decorator';
 import { CommentService } from '../services/comment.service';
 import { CreateCommentDto, UpdateCommentDto } from '../dto/comment.dto';
-import { Role } from '../entities/role.enum';
-import { RolesGuard } from '../auth/roles.guard';
+import { PermissionGuard, RequirePermissions } from '../guards/permission.guard';
 
 @ApiTags('comments')
 @Controller('comments')
+@UseGuards(JwtAuthGuard, PermissionGuard)
+@ApiBearerAuth()
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @RequirePermissions({ resource: 'comments', action: 'create' })
   create(@User('id') userId: number, @Body() createCommentDto: CreateCommentDto) {
     return this.commentService.create(userId, createCommentDto);
   }
 
   @Get('post/:postId')
+  @RequirePermissions({ resource: 'comments', action: 'read' })
   findByPost(@Param('postId', ParseIntPipe) postId: number) {
     return this.commentService.findByPost(postId);
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @RequirePermissions({ resource: 'comments', action: 'update' })
   update(
     @User('id') userId: number,
     @Param('id', ParseIntPipe) id: number,
@@ -46,26 +46,22 @@ export class CommentController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @ApiBearerAuth()
+  @RequirePermissions({ resource: 'comments', action: 'delete' })
   remove(
     @User('id') userId: number,
-    @User('role') role: Role,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return this.commentService.remove(userId, id, role === Role.ADMIN);
+    return this.commentService.remove(userId, id, true);
   }
 
   @Post(':id/like')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @RequirePermissions({ resource: 'comments', action: 'like' })
   like(@User('id') userId: number, @Param('id', ParseIntPipe) commentId: number) {
     return this.commentService.like(userId, commentId);
   }
 
   @Delete(':id/like')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @RequirePermissions({ resource: 'comments', action: 'unlike' })
   unlike(@User('id') userId: number, @Param('id', ParseIntPipe) commentId: number) {
     return this.commentService.unlike(userId, commentId);
   }

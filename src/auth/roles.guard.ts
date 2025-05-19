@@ -1,23 +1,45 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { UserRole } from '../entities/user.entity';
-import { ROLES_KEY } from '../decorators/roles.decorator';
+import { RequirePermissions } from '../decorators/roles.decorator';
+
+interface Permission {
+  resource: string;
+  action: string;
+}
+
+interface Role {
+  id: number;
+  name: string;
+  permissions: Permission[];
+}
 
 @Injectable()
-export class RolesGuard implements CanActivate {
+export class PermissionGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.getAllAndOverride<UserRole[]>(ROLES_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+    const requiredPermissions = this.reflector.getAllAndOverride<Permission[]>(
+      'permissions',
+      [context.getHandler(), context.getClass()],
+    );
 
-    if (!requiredRoles) {
+    if (!requiredPermissions) {
       return true;
     }
 
     const { user } = context.switchToHttp().getRequest();
-    return requiredRoles.some((role) => user?.role === role);
+    if (!user || !user.roles) {
+      return false;
+    }
+
+    // Check if user has any of the required permissions through their roles
+    return user.roles.some((role: Role) => 
+      role.permissions.some((permission: Permission) => 
+        requiredPermissions.some(required => 
+          permission.resource === required.resource && 
+          permission.action === required.action
+        )
+      )
+    );
   }
 } 

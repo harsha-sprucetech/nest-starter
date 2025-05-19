@@ -8,7 +8,7 @@ import { NumberEntity } from './entities/number.entity';
 import { CarController } from './controllers/car.controller';
 import { CarService } from './services/car.service';
 import { CarEntity } from './entities/car.entity';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { UserEntity } from './entities/user.entity';
 import configuration from './config/configuration';
 import { AppController } from './app.controller';
