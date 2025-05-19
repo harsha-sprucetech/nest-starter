@@ -1,21 +1,10 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-  Query,
-  ParseIntPipe,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { User } from '../decorators/user.decorator';
+import { JwtAuthGuard } from '../../../auth/jwt-auth.guard';
+import { User } from '../../../decorators/user.decorator';
 import { PostService } from '../services/post.service';
-import { CreatePostDto, UpdatePostDto, PostQueryDto } from '../dto/post.dto';
-import { PermissionGuard, RequirePermissions } from '../guards/permission.guard';
+import { CreatePostDto, UpdatePostDto } from '../dto/post.dto';
+import { PermissionGuard, RequirePermissions } from '../../../guards/permission.guard';
 
 @ApiTags('posts')
 @Controller('posts')
@@ -32,8 +21,8 @@ export class PostController {
 
   @Get()
   @RequirePermissions({ resource: 'posts', action: 'read' })
-  findAll(@Query() query: PostQueryDto) {
-    return this.postService.findAll(query);
+  findAll() {
+    return this.postService.findAll();
   }
 
   @Get(':id')
@@ -54,11 +43,8 @@ export class PostController {
 
   @Delete(':id')
   @RequirePermissions({ resource: 'posts', action: 'delete' })
-  remove(
-    @User('id') userId: number,
-    @Param('id', ParseIntPipe) id: number,
-  ) {
-    return this.postService.remove(userId, id, true);
+  remove(@User('id') userId: number, @Param('id', ParseIntPipe) id: number) {
+    return this.postService.remove(userId, id);
   }
 
   @Post(':id/like')

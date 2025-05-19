@@ -1,12 +1,7 @@
 import { Client } from 'pg';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
-import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt';
-
-// Get the directory name for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Load environment variables from root directory
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
@@ -37,8 +32,6 @@ const ADMIN_USER = {
 const RESOURCES = [
   { name: 'posts', actions: ['create', 'read', 'update', 'delete', 'like', 'unlike'] },
   { name: 'comments', actions: ['create', 'read', 'update', 'delete', 'like', 'unlike'] },
-  { name: 'cars', actions: ['create', 'read', 'update', 'delete', 'like', 'unlike'] },
-  { name: 'numbers', actions: ['create', 'read', 'update', 'delete', 'like', 'unlike'] },
   { name: 'admin/roles', actions: ['create', 'read', 'update', 'delete'] },
   { name: 'admin/permissions', actions: ['create', 'read', 'update', 'delete'] },
   { name: 'admin/database', actions: ['manage'] },
@@ -230,6 +223,7 @@ async function createAdminUser(): Promise<void> {
       console.log('Email:', ADMIN_USER.email);
       console.log('Password:', ADMIN_USER.password);
 
+      process.exit(0);
     } catch (error) {
       // Rollback the transaction on error
       await client.query('ROLLBACK');
@@ -238,6 +232,7 @@ async function createAdminUser(): Promise<void> {
 
   } catch (error) {
     console.error('Error:', error);
+    process.exit(1);
   } finally {
     await client.end();
     console.log('Database connection closed');

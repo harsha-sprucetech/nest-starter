@@ -5,8 +5,7 @@
   "main": "create-admin.js",
   "type": "module",
   "scripts": {
-    "create-admin": "npx tsx create-admin.ts",
-    "truncate-db": "npx tsx truncate-db.ts"
+    "create-admin": "npx tsx create-admin.ts"
   },
   "dependencies": {
     "pg": "^8.11.3",

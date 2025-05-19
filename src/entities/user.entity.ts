@@ -1,8 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, UpdateDateColumn, BeforeInsert, ManyToMany, JoinTable } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { PostEntity } from './post.entity';
-import { CommentEntity } from './comment.entity';
-import { LikeEntity } from './like.entity';
+import { PostEntity } from '../modules/content/entities/post.entity';
+import { CommentEntity } from '../modules/content/entities/comment.entity';
+import { LikeEntity } from '../modules/content/entities/like.entity';
 import { RoleEntity } from './role.entity';
 
 @Entity('users')
@@ -19,22 +19,8 @@ export class UserEntity {
   @Column()
   name: string;
 
-  @Column({ unique: true, nullable: true })
+  @Column({ nullable: true, unique: true })
   mobileNumber: string;
-
-  @ManyToMany(() => RoleEntity, role => role.users)
-  @JoinTable({
-    name: 'user_roles',
-    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id' }
-  })
-  roles: RoleEntity[];
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 
   @OneToMany(() => PostEntity, post => post.author)
   posts: PostEntity[];
@@ -43,10 +29,21 @@ export class UserEntity {
   comments: CommentEntity[];
 
   @OneToMany(() => LikeEntity, like => like.user)
-  postLikes: LikeEntity[];
+  likes: LikeEntity[];
 
-  @OneToMany(() => LikeEntity, like => like.user)
-  commentLikes: LikeEntity[];
+  @ManyToMany(() => RoleEntity)
+  @JoinTable({
+    name: 'user_roles',
+    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id' },
+  })
+  roles: RoleEntity[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @BeforeInsert()
   async hashPassword() {
